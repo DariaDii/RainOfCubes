@@ -2,8 +2,15 @@ using UnityEngine;
 
 public class ColorChanger : MonoBehaviour
 {
-    public void ChangeToRandomColor(Renderer renderer)
+    [SerializeField] private Renderer _renderer;
+
+    public void ChangeToRandomColor()
     {
-        renderer.material.color = Random.ColorHSV();
+        _renderer.material.color = Random.ColorHSV();
+    }
+
+    public void ChangeColor(Color color)
+    {
+        _renderer.material.color = color;
     }
 }

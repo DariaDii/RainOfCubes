@@ -6,38 +6,46 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private Renderer _renderer;
+    [SerializeField] private Color _defaulColor;
 
     [SerializeField] private ColorChanger _colorChanger;
-    [SerializeField] private CollisionHandling _collisionHandling;
+    [SerializeField] private ObstacleDetector _obstacleDetector;
 
     private bool isChanged = false;
     private int _minLiveTime = 2;
-    private int _maxLiveTime = 5;
+    private int _maxLiveTime = 5;    
 
     public event Action<Cube> TimeOver;
 
     private void OnEnable()
     {
-        _collisionHandling.ObjectTouchedPlatform += Change;
+        _obstacleDetector.ObjectTouchedPlatform += ChangeParameters;
     }
 
     private void OnDisable()
     {
-        _collisionHandling.ObjectTouchedPlatform -= Change;
+        _obstacleDetector.ObjectTouchedPlatform -= ChangeParameters;
     }
 
-    private void Change()
+    public void ResetParameters()
+    {
+        _colorChanger.ChangeColor(_defaulColor);        
+        _rigidbody.linearVelocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
+        isChanged = false;
+    }
+
+    private void ChangeParameters()
     {
         if (isChanged)
             return;
         
-        _colorChanger.ChangeToRandomColor(_renderer);
-        StartCoroutine(Lifetime());
+        _colorChanger.ChangeToRandomColor();
+        StartCoroutine(ChangingLifetime());
         isChanged = true;
     }
 
-    private IEnumerator Lifetime()
+    private IEnumerator ChangingLifetime()
     {
         yield return new WaitForSeconds(UnityEngine.Random.Range(_minLiveTime,_maxLiveTime));
 

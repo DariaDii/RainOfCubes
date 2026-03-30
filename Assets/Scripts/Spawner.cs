@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -15,35 +16,52 @@ public class Spawner : MonoBehaviour
     {
         _pool = new ObjectPool<Cube>(
             createFunc: () => Instantiate(_cubePrefab),
-            actionOnGet: (cube) => ActionOnGet(cube),
-            actionOnRelease: (cube) => cube.gameObject.SetActive(false),
-            actionOnDestroy: (cube) => Destroy(cube),
+            actionOnGet: (cube) => OnGetAction(cube),
+            actionOnRelease: (cube) => ActionOnRelease(cube),
+            actionOnDestroy: (cube) => Destroy(cube.gameObject),
             collectionCheck: true,
             defaultCapacity: _poolCapacity,
             maxSize: _poolMaxSize);
     }
 
-    private void ActionOnGet(Cube cube)
+    private void OnGetAction(Cube cube)
     {
         int randomIndex = Random.Range(0, _spawnPoint.Length);
         Transform randomPoint = _spawnPoint[randomIndex];
         cube.gameObject.transform.position = randomPoint.position;
         cube.gameObject.SetActive(true);
-        cube.TimeOver += ReleaseCube;
+        cube.TimeOver += ReturnToPool;
     }
 
-    private void ReleaseCube(Cube cube)
+    private void ReturnToPool(Cube cube)
     {
-        cube.TimeOver -= ReleaseCube;
         _pool.Release(cube);
+    }
+
+    private void ActionOnRelease(Cube cube)
+    {
+        cube.gameObject.SetActive(false);
+        cube.ResetParameters();
+        cube.TimeOver -= ReturnToPool;
     }
 
     private void Start()
     {
-        InvokeRepeating(nameof(GetSphere), 0.0f, _repatRate);
+        StartCoroutine(Spawn());
     }
 
-    private void GetSphere()
+    private IEnumerator Spawn()
+    {
+        var wait = new WaitForSeconds(_repatRate);
+
+        while (enabled)
+        {
+            GetCube();
+            yield return wait;
+        }
+    }
+
+    private void GetCube()
     {
         _pool.Get();
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7736053461993161822}
   - component: {fileID: 4359080249457755618}
   - component: {fileID: -6798965974720886029}
-  - component: {fileID: 269954621611518261}
+  - component: {fileID: 3329392747724950374}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -156,9 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cube
   _rigidbody: {fileID: 7736053461993161822}
-  _renderer: {fileID: 3257877294980591544}
+  _defaulColor: {r: 0.5882353, g: 0.5568628, b: 0.5411765, a: 0}
   _colorChanger: {fileID: -6798965974720886029}
-  _collisionHandling: {fileID: 269954621611518261}
+  _obstacleDetector: {fileID: 3329392747724950374}
 --- !u!114 &-6798965974720886029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 557d1c8e1d7e4e14e976ba61a7165aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorChanger
---- !u!114 &269954621611518261
+  _renderer: {fileID: 3257877294980591544}
+--- !u!114 &3329392747724950374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,6 +181,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8009528138503252164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cd279fff261afc4cbfbc7a96c1a49e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 93faeeef4ca929d47918500fee5d8d74, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CollisionHandling
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleDetector
