@@ -7,9 +7,10 @@ public class ObstacleDetector : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-       if(collision.gameObject.GetComponent<Platform>() != null)
+       if(collision.gameObject.TryGetComponent<Platform>(out _))
         {
             ObjectTouchedPlatform?.Invoke();
         }
+
     }
 }

@@ -5,13 +5,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private Color _defaulColor;
+    [SerializeField] private Rigidbody _rigidbody;    
 
     [SerializeField] private ColorChanger _colorChanger;
     [SerializeField] private ObstacleDetector _obstacleDetector;
 
-    private bool isChanged = false;
+    private bool _canChange = true;
     private int _minLiveTime = 2;
     private int _maxLiveTime = 5;    
 
@@ -29,20 +28,20 @@ public class Cube : MonoBehaviour
 
     public void ResetParameters()
     {
-        _colorChanger.ChangeColor(_defaulColor);        
+        _colorChanger.ResetState();        
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
-        isChanged = false;
+        _canChange = true;
     }
 
     private void ChangeParameters()
     {
-        if (isChanged)
+        if (!_canChange)
             return;
         
         _colorChanger.ChangeToRandomColor();
         StartCoroutine(ChangingLifetime());
-        isChanged = true;
+        _canChange = false;
     }
 
     private IEnumerator ChangingLifetime()
